@@ -7,6 +7,7 @@ const async = require('async')
 const symbols = ["AAPL", "FB", "TSLA"]
 
 function main() {
+	app_activate('Chart')
 	timeoutSet(4000, () => {
 		async.forEachSeries(symbols, get_ticker_image, () => {
 			console.log('Done!')
@@ -35,6 +36,18 @@ function take_screenshot (filename) {
 	})
 }
 
+function app_activate (app_name_string) {
+	const eol = '\r\n'
+	const file_string = [
+		'set WshShell = WScript.CreateObject("WScript.Shell")',
+		('WshShell.AppActivate "' + app_name_string + '"')
+	].join(eol) + eol
+	const file_data = new Buffer(file_string, 'utf8')
+	const vbscriptPath = path.join(__dirname, 'temp1.vbs')
+	fs.writeFileSync(vbscriptPath, file_data)
+
+	spawn('wscript.exe', [vbscriptPath])
+}
 
 function send_keys (sendkeysCode) {
 	const eol = '\r\n'
@@ -56,9 +69,10 @@ function timeoutSet (x, y) {
 
 if (!module.parent)
 	main()
-	
+
 module.exports = {
 	send_keys,
 	take_screenshot,
-	get_ticker_image
+	get_ticker_image,
+	app_activate
 }
