@@ -54,8 +54,9 @@ function timeoutSet (x, y) {
 	setTimeout(y, x)
 }
 
-main() if not module.parent
-
+if (!module.parent)
+	main()
+	
 module.exports = {
 	send_keys,
 	take_screenshot,
