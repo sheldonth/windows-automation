@@ -24,7 +24,7 @@ function get_ticker_image (symbol, callback) {
 			// TODO delete screenshot
 			callback(null)
 		})
-	})	
+	})
 }
 
 function take_screenshot (filename) {
@@ -54,5 +54,10 @@ function timeoutSet (x, y) {
 	setTimeout(y, x)
 }
 
-main()
+main() if not module.parent
 
+module.exports = {
+	send_keys,
+	take_screenshot,
+	get_ticker_image
+}
