@@ -1,17 +1,32 @@
 const spawn = require('child_process').spawn
+const execFile = require('child_process').execFile
 const assert = require('assert')
 const path = require('path')
 const fs = require('fs')
 const async = require('async')
-
+const child_process = require('child_process')
 const symbols = ["AAPL", "FB", "TSLA"]
-
+const window_title = 'Chart'
 function main() {
-	app_activate('Chart')
-	timeoutSet(4000, () => {
-		async.forEachSeries(symbols, get_ticker_image, () => {
-			console.log('Done!')
-		})
+	app_activate(window_title)
+	timeoutSet(1000, () => {
+		nir_activate_window("activate", "Command Prompt")
+		// async.forEachSeries(symbols, get_ticker_image, () => {
+		// 	console.log('Done!')
+		// })
+	})
+}
+
+function autoit_script (script_string) {
+	const autoit = child_process.exec(script_string)
+}
+
+function nir_activate_window (window_action, window_title) {
+	const nir_path = path.join(__dirname + '/nircmd/nircmd.exe win ' + window_action + ' title \"' + window_title + '\"' + ' 1')
+	console.log(nir_path);
+	const nir = child_process.exec(nir_path)
+	nir.on('exit', (result) => {
+		assert.equal(result, 0)
 	})
 }
 
@@ -74,5 +89,6 @@ module.exports = {
 	send_keys,
 	take_screenshot,
 	get_ticker_image,
-	app_activate
+	app_activate,
+	nir_activate_window
 }

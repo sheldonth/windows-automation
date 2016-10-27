@@ -1,2 +1,2 @@
 set WshShell = WScript.CreateObject("WScript.Shell")
-WshShell.AppActivate "Chart"
+WshShell.AppActivate "Command Prompt"
